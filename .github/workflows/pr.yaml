@@ -1,0 +1,65 @@
+name: Pull Request Test, Lint and security scan
+
+on: pull_request
+
+jobs:
+  run-linters:
+    name: Run Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: python setup.py install
+
+      - name: Install linter
+        run: pip install pylint
+
+      - name: Run linting
+        run: pylint hello
+
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: python setup.py install
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run Pytest
+        run: pytest
+
+  run-security-scan:
+    needs: run-tests
+
+    name: Run Security scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          trivy-config: trivy.yaml
