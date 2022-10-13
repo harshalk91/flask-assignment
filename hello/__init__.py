@@ -12,6 +12,6 @@ def create_app():
 
     @app.route("/")
     def hello():
-        return "Hello, There. Hope you are doing well"
+        return "Hello, There. Hope you are doing well, Thanks"
 
     return app
