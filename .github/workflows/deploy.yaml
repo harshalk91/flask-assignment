@@ -20,7 +20,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Deploy demo-flask application
-        run: aws ecs update-service --cluster demo-flask-ecs --service demo-flask-service --force-new-deployment
+        run: aws ecs update-service --cluster demo-flask-ecs --service demo-flask-ecs-service --force-new-deployment
 
 
 
